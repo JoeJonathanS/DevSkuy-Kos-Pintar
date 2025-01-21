@@ -1,56 +1,124 @@
-# `DevSkuy-Kos-Pintar`
+# Panduan Lengkap Instalasi dan Penggunaan `DevSkuy-Kos-Pintar`
 
-Welcome to your new `DevSkuy-Kos-Pintar` project and to the Internet Computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
+Selamat datang di proyek `DevSkuy-Kos-Pintar` dan komunitas pengembang Internet Computer! Panduan ini akan membantu Anda menginstal dan menjalankan proyek ini secara lokal di Windows menggunakan WSL (Windows Subsystem for Linux).
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+## 1. Instalasi WSL di Windows
 
-To learn more before you start working with `DevSkuy-Kos-Pintar`, see the following documentation available online:
+Sebelum memulai proyek ini, Anda perlu menginstal WSL di Windows. Ikuti langkah-langkah berikut:
 
-- [Quick Start](https://internetcomputer.org/docs/current/developer-docs/setup/deploy-locally)
-- [SDK Developer Tools](https://internetcomputer.org/docs/current/developer-docs/setup/install)
+1. Buka `Command Prompt` atau `PowerShell` sebagai Administrator.
+2. Jalankan perintah berikut untuk mengaktifkan WSL:
+   ```powershell
+   wsl --install
+   ```
+   Ini akan menginstal WSL dengan distribusi default (biasanya Ubuntu). Jika Anda ingin memilih distribusi lain, gunakan perintah berikut:
+   ```powershell
+   wsl --list --online
+   wsl --install -d <Nama_Distribusi>
+   ```
+3. Restart komputer jika diminta.
+4. Setelah reboot, buka terminal WSL dengan mengetik `wsl` di Command Prompt atau menggunakan aplikasi Ubuntu yang telah terinstal.
+5. Perbarui paket sistem dengan menjalankan:
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
 
-If you want to start working on your project right away, you might want to try the following commands:
+## 2. Instalasi Dependencies
 
-```bash
-dfx help
-dfx canister --help
-```
+Setelah WSL terinstal, Anda perlu menginstal dependencies untuk menjalankan proyek `DevSkuy-Kos-Pintar`.
 
-## Running the project locally
+1. **Instal Node.js 22 dan npm**
+   ```bash
+   curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+   sudo apt install -y nodejs
+   ```
+2. **Verifikasi instalasi Node.js dan npm**
+   ```bash
+   node -v
+   npm -v
+   ```
+3. **Instal DFX SDK versi 20**
+   ```bash
+   sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)" --version 0.20.0
+   ```
+4. **Verifikasi instalasi DFX**
+   ```bash
+   dfx --version
+   ```
 
-If you want to test your project locally, you can use the following commands:
+## 3. Menjalankan Proyek Secara Lokal
 
-```bash
-# Starts the replica, running in the background
-dfx start --background
+Setelah semua dependencies terinstal, Anda dapat mulai menjalankan proyek `DevSkuy-Kos-Pintar` secara lokal dengan langkah-langkah berikut:
 
-# Deploys your canisters to the replica and generates your candid interface
-dfx deploy
-```
+1. **Clone repository proyek**
+   ```bash
+   git clone https://github.com/username/DevSkuy-Kos-Pintar.git
+   cd DevSkuy-Kos-Pintar
+   ```
+2. **Inisialisasi proyek**
+   ```bash
+   dfx start --background
+   ```
+   Perintah ini akan memulai replika Internet Computer di latar belakang.
 
-Once the job completes, your application will be available at `http://localhost:4943?canisterId={asset_canister_id}`.
+3. **Deploy canisters ke replika lokal**
+   ```bash
+   dfx deploy
+   ```
+4. **Akses aplikasi**
+   Setelah proses deploy selesai, aplikasi akan tersedia di:
+   ```
+   http://localhost:4943?canisterId={asset_canister_id}
+   ```
 
-If you have made changes to your backend canister, you can generate a new candid interface with
+## 4. Pengembangan Backend
 
-```bash
-npm run generate
-```
+Jika Anda melakukan perubahan pada backend, Anda bisa memperbarui antarmuka candid dengan:
+   ```bash
+   npm run generate
+   ```
+   Disarankan menjalankan perintah ini sebelum memulai pengembangan frontend.
 
-at any time. This is recommended before starting the frontend development server, and will be run automatically any time you run `dfx deploy`.
+## 5. Pengembangan Frontend
 
-If you are making frontend changes, you can start a development server with
+Untuk menjalankan server frontend dalam mode pengembangan, gunakan perintah:
+   ```bash
+   npm start
+   ```
+   Server ini akan berjalan di:
+   ```
+   http://localhost:8080
+   ```
+   dan akan memproksi permintaan API ke replika di port 4943.
 
-```bash
-npm start
-```
+## 6. Konfigurasi Lingkungan Frontend
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 4943.
+Jika Anda men-deploy frontend di luar DFX, sesuaikan variabel lingkungan dengan salah satu metode berikut:
 
-### Note on frontend environment variables
+- Setel `DFX_NETWORK` ke `ic` jika menggunakan Webpack.
+- Gunakan metode lain untuk menggantikan `process.env.DFX_NETWORK` dalam deklarasi otomatis.
+- Ubah `dfx.json` dengan menambahkan:
+  ```json
+  "canisters": {
+    "{asset_canister_id}": {
+      "declarations": {
+        "env_override": "ic"
+      }
+    }
+  }
+  ```
+- Gunakan `createActor` constructor Anda sendiri.
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+## 7. Perintah Berguna
 
-- set`DFX_NETWORK` to `ic` if you are using Webpack
-- use your own preferred method to replace `process.env.DFX_NETWORK` in the autogenerated declarations
-  - Setting `canisters -> {asset_canister_id} -> declarations -> env_override to a string` in `dfx.json` will replace `process.env.DFX_NETWORK` with the string in the autogenerated declarations
-- Write your own `createActor` constructor
+- Melihat bantuan DFX:
+  ```bash
+  dfx help
+  ```
+- Melihat bantuan canister:
+  ```bash
+  dfx canister --help
+  ```
+
+Dengan mengikuti panduan ini, Anda dapat menjalankan dan mengembangkan proyek `DevSkuy-Kos-Pintar` di Windows menggunakan WSL dengan lancar. Selamat coding!
+
