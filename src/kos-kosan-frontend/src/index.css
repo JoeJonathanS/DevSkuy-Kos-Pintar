@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+  width: 100%;
+  max-width: 640px; /* Tetapkan ukuran maksimum seperti layar mobile */
+  margin: 0 auto;
+  overflow-x: hidden; /* Hindari scroll horizontal */
+  background-color: aliceblue;
+}
+body {
+  overflow-x: hidden; /* Hindari scroll horizontal */
+}
