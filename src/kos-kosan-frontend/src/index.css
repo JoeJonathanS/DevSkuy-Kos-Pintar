@@ -3,11 +3,19 @@
 @tailwind utilities;
 html {
   width: 100%;
-  max-width: 640px; /* Tetapkan ukuran maksimum seperti layar mobile */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  margin: 0 auto;
+  /* max-width: 640px; Tetapkan ukuran maksimum seperti layar mobile */
   margin: 0 auto;
   overflow-x: hidden; /* Hindari scroll horizontal */
   background-color: aliceblue;
 }
 body {
   overflow-x: hidden; /* Hindari scroll horizontal */
+  /* flex-direction: column; */
+  /* justify-content: center; Pusatkan konten secara vertikal */
+  /* align-items: center; Pusatkan konten secara horizontal */
+
 }

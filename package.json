@@ -15,5 +15,10 @@
   "workspaces": [
     "src/kos-kosan-backend",
     "src/kos-kosan-frontend"
-  ]
+  ],
+  "dependencies": {
+    "@shadcn/ui": "^0.0.4",
+    "lucide-react": "^0.474.0",
+    "react-router-dom": "^7.1.3"
+  }
 }
