@@ -69,13 +69,13 @@ function KosDetail() {
     return (
         <div className="container mx-auto bg-gray-100 mt-3">
             <Link
-            to="/" 
-            className="flex items-center justify-center w-40 mb-3 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-300 ease-in-out hover:shadow-lg"
+                to="/home"
+                className="flex items-center justify-center w-40 mb-3 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors duration-300 ease-in-out hover:shadow-lg"
             >
-            <IoArrowBackCircle className="mr-2" />
-            <span>Kembali</span>
+                <IoArrowBackCircle className="mr-2" />
+                <span>Kembali</span>
             </Link>
-            
+
             <div className="bg-white rounded-xl p-6">
                 {/* Gambar Kos */}
                 <div className="relative mb-6">

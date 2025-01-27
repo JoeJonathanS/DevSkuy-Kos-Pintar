@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { FaUserCircle, FaCog, FaSignOutAlt, FaBell } from 'react-icons/fa';
 
 function Header() {
@@ -41,11 +42,14 @@ function Header() {
                                     >
                                         <FaCog className="mr-2" /> Settings
                                     </li>
-                                    <li
-                                        className="px-4 py-2 hover:bg-gray-100 flex items-center text-red-500 cursor-pointer"
-                                    >
-                                        <FaSignOutAlt className="mr-2" /> Logout
-                                    </li>
+                                    <Link
+                                        to="/">
+                                        <li
+                                            className="px-4 py-2 hover:bg-gray-100 flex items-center text-red-500 cursor-pointer"
+                                        >
+                                            <FaSignOutAlt className="mr-2" /> Logout
+                                        </li>
+                                    </Link>
                                 </ul>
                             </div>
                         )}

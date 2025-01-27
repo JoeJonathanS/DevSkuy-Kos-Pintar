@@ -1,12 +1,43 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
 import Input from '../component/input';
 import Button from '../component/button';
 import Card from '../component/card';
+import Api from '../endpoint/api';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [userCredential, setUserCredential] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false); // New state for password error
+  const [isUserCredentialInvalid, setUserCredentialInvalid] = useState(false); // New state for user Credential error
+
+  async function login() {
+    let uCred = userCredential;
+    let uPass = userPassword;
+
+    // validation on empty
+    setUserCredentialInvalid(userCredential === '');
+    setIsPasswordInvalid(userPassword === '');
+
+    // Stop execution if either field is invalid
+    if (userCredential === '' || userPassword === '') {
+      return;
+    } else {
+      let response = await Api.login(userCredential, userPassword);
+      let data = JSON.parse(response);
+      if(data.status == 200){
+        // @TODO: do async storage store method for session or old fashion local session 
+        navigate('/home');
+      } else {
+        // @TODO: create login error.
+      }
+    }
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-slate-100 p-8">
@@ -15,36 +46,60 @@ const Login = () => {
           {/* Left side - Form */}
           <div className="w-1/2">
             <div className="mb-2">
-            <img
-              src="https://i.postimg.cc/3RvQghFM/Logo-KP.png"
-              // src="https://i.postimg.cc/Ghy6jRWQ/kos-pintar-high-resolution-logo.png"
-              alt="Kos"
-              className="mx-auto"
-              style={{
-                width: "200px",
-                height: "200px",
-                objectFit: "contain",
-              }}
-            />
+              <img
+                src="https://i.postimg.cc/3RvQghFM/Logo-KP.png"
+                // src="https://i.postimg.cc/Ghy6jRWQ/kos-pintar-high-resolution-logo.png"
+                alt="Kos"
+                className="mx-auto"
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  objectFit: "contain",
+                }}
+              />
             </div>
 
             <div className="space-y-6">
               <h1 className="text-2xl font-bold text-green-600">Selamat Datang di Kos Pintar</h1>
-              
+
               <p className="text-gray-500 font-semibold">Silakan masukan Email dan kata sandi akun Anda</p>
 
               <form className="space-y-4">
                 <div>
-                  <label className="block text-sm mb-1 font-bold">Email / Nomor Telepon</label>
-                  <Input type="text" placeholder="" className="w-full" />
+                  <label className="block text-sm mb-1 font-bold" htmlFor="uCred">Email / Nomor Telepon</label>
+                  <Input
+                    id="uCred"
+                    type="text"
+                    placeholder="Detail Email/Nomor Telepon anda"
+                    className="w-full"
+                    value={userCredential}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setUserCredential(value);
+                      setUserCredentialInvalid(value === '');
+                    }}
+                  />
+                  {/* Error message for invalid email / phone number Credential */}
+                  {isUserCredentialInvalid && (
+                    <span className="block text-sm mb-1 font-bold text-red-600">
+                      Email / Nomor Telepon tidak boleh kosong
+                    </span>
+                  )}
                 </div>
-
                 <div className="relative">
-                  <label className="block text-sm mb-1 font-bold">Kata Sandi</label>
+                  <label className="block text-sm mb-1 font-bold" htmlFor="uPass">Kata Sandi</label>
                   <div className="relative">
                     <Input
+                      id="uPass"
                       type={showPassword ? "text" : "password"}
                       className="w-full pr-10"
+                      placeholder={"Masukkan kata sandi anda"}
+                      value={userPassword}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setUserPassword(value);
+                        setIsPasswordInvalid(value === '');
+                      }}
                     />
                     <button
                       type="button"
@@ -57,17 +112,23 @@ const Login = () => {
                       )}
                     </button>
                   </div>
+                  {/* Adding error on invalid password */}
+                  {isPasswordInvalid && (
+                    <span className="block text-sm mb-1 font-bold text-red-600">
+                      Kata Sandi tidak boleh kosong
+                    </span>
+                  )}
                 </div>
 
-                <Button type="submit" className="w-full bg-green-600 hover:bg-green-600 text-white">
+                <Button type="button" onClick={() => login()} className="w-full bg-green-600 hover:bg-green-600 text-white">
                   Masuk
                 </Button>
 
                 <p className="text-center text-sm text-gray-600">
-                  Belum punya akun?{" "}
-                  <a href="/register" className="text-green-600 ml-1 hover:underline">
+                  Belum punya akun ?
+                  <Link to="/register" className="text-green-600 ml-1 hover:underline">
                     Daftar
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>

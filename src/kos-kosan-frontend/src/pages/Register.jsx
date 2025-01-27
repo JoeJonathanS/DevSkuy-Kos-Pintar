@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Link } from "react-router-dom";
 import Input from '../component/input';
 import Button from '../component/button';
 import Card from '../component/card';
@@ -88,10 +89,10 @@ const Register = () => {
                 </Button>
 
                 <p className="text-center text-sm text-gray-600">
-                  Sudah punya akun?{" "}
-                  <a href="/login" className="text-green-600 ml-1 hover:underline">
+                  Sudah punya akun ?
+                  <Link to="/" className="text-green-600 ml-1 hover:underline">
                     Masuk
-                  </a>
+                  </Link>
                 </p>
                 <div className="space-y-4"></div>
               </form>
@@ -115,7 +116,7 @@ const Register = () => {
               <div className="relative p-6 z-10 bg-opacity-70 rounded-lg">
                 <div className="space-y-4">
                   <div className="bg-yellow-500 text-white px-4 py-3 rounded-xl max-w-max shadow-lg relative">
-                    Sewa kos hanya di kos pintar aja!
+                    Sewa kos hanya di kos pintar aja !
                     <div className="absolute -bottom-2 left-4 w-3 h-3 bg-orange-500 rotate-45 transform origin-bottom-left"></div>
                   </div>
 
